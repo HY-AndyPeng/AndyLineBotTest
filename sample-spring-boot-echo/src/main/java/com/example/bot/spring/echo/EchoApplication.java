@@ -16,9 +16,12 @@
 
 package com.example.bot.spring.echo;
 
+import java.util.Collections;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -29,8 +32,11 @@ import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.message.template.ConfirmTemplate;
+import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+
+import lombok.NonNull;
 
 @SpringBootApplication
 @LineMessageHandler
@@ -56,23 +62,13 @@ public class EchoApplication {
                         new MessageAction("No", "No!")
                 );
                 TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
-                this.reply(replyToken, templateMessage);
+                return templateMessage;
         		break;
         }
         
         return new TextMessage(originalMessageText);
     }
 
-    @EventMapping
-    public void handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
-        LocationMessageContent locationMessage = event.getMessage();
-        reply(event.getReplyToken(), new LocationMessage(
-                locationMessage.getTitle(),
-                locationMessage.getAddress(),
-                locationMessage.getLatitude(),
-                locationMessage.getLongitude()
-        ));
-    }
     
     @EventMapping
     public void handleDefaultMessageEvent(Event event) {
