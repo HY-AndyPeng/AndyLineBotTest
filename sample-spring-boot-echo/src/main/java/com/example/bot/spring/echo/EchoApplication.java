@@ -40,15 +40,11 @@ public class EchoApplication {
         Message result = null;
         final String originalMessageText = event.getMessage().getText();
         
-        switch(originalMessageText) {
-        	case "userId":
-        		result = new TextMessage(event.getSource().getUserId());
-        		break;
-        	case "87":
-        		result = new TextMessage("");
-        		break;
+        if("87".equals(originalMessageText)) {
+        	result = new TextMessage("你全家都87");
+        }else {
+        	result = new TextMessage(originalMessageText);
         }
-        
         
         return result;
     }
