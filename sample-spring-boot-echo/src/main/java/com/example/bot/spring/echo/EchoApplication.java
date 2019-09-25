@@ -19,14 +19,11 @@ package com.example.bot.spring.echo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.Message;
-import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
-import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
@@ -47,17 +44,13 @@ public class EchoApplication {
         	case "userId":
         		result = new TextMessage(event.getSource().getUserId());
         		break;
-        	case "test":
-	        	ConfirmTemplate confirmTemplate = new ConfirmTemplate(
-	                    "Do it?",
-	                    new MessageAction("Yes", "Yes!"),
-	                    new MessageAction("No", "No!")
-	            );
-	        	result = new TemplateMessage("Confirm alt text", confirmTemplate);
-	        	break;
+        	case "87":
+        		result = new TextMessage("");
+        		break;
         }
         
-        return new TextMessage(originalMessageText);
+        
+        return result;
     }
 
     @EventMapping
