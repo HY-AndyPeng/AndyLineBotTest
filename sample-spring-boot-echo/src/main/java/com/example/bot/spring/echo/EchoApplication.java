@@ -51,19 +51,18 @@ public class EchoApplication {
         final String originalMessageText = event.getMessage().getText();
         final String replyToken = event.getReplyToken();
         
-        switch(originalMessageText) {
-        	case "@ID":
-        		return new TextMessage(event.getSource().getUserId());
-        		break;
-        	case "@C":
-        		ConfirmTemplate confirmTemplate = new ConfirmTemplate(
-                        "Do it?",
-                        new MessageAction("Yes", "Yes!"),
-                        new MessageAction("No", "No!")
-                );
-                TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
-                return templateMessage;
-        		break;
+        if("@ID".equals(originalMessageText)) {
+        	return new TextMessage(event.getSource().getUserId());
+        }
+        
+        if("@C".equals(originalMessageText)) {
+        	ConfirmTemplate confirmTemplate = new ConfirmTemplate(
+                    "Do it?",
+                    new MessageAction("Yes", "Yes!"),
+                    new MessageAction("No", "No!")
+            );
+            TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
+            return templateMessage;
         }
         
         return new TextMessage(originalMessageText);
