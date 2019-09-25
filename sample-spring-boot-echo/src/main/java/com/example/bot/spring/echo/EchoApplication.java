@@ -68,7 +68,6 @@ public class EchoApplication {
         
         return new TextMessage(originalMessageText);
     }
-
     
     @EventMapping
     public void handleDefaultMessageEvent(Event event) {
