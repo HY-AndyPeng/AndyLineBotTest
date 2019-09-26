@@ -57,6 +57,7 @@ public class EchoApplication {
                         new MessageAction("No", "No!")
                 );
         		result = new TemplateMessage("Confirm alt text", confirmTemplate);
+        		break;
         	default: 
         		result = new TextMessage(originalMessageText);
         }
