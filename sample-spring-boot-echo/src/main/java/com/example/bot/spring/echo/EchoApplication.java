@@ -42,6 +42,7 @@ public class EchoApplication {
         System.out.println("event: " + event);
         Message result = null;
         final String originalMessageText = event.getMessage().getText();
+        final String token = event.getReplyToken();
         
         switch(originalMessageText) {
         	case "87":
@@ -49,6 +50,9 @@ public class EchoApplication {
         		break;
         	case "@ID":
         		result = new TextMessage(event.getSource().getUserId());
+        		break;
+        	case "token":
+        		result = new TextMessage(token);
         		break;
         	case "@Confirm":	
         		ConfirmTemplate confirmTemplate = new ConfirmTemplate(
