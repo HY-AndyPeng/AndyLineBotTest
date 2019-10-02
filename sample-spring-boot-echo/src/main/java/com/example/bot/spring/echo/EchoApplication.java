@@ -26,6 +26,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
+import com.linecorp.bot.model.action.DatetimePickerAction;
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -69,18 +70,18 @@ public class EchoApplication {
         		result = new TextMessage(token);
         		break;
         	case "@Confirm":	
+        		
+
         		ConfirmTemplate confirmTemplate = new ConfirmTemplate(
                         "Do it?",
                         new MessageAction("Yes", "Yes!"),
-                        new MessageAction("No", "No!")
+                        new DatetimePickerAction("123", "test", "date")  
                 );
         		result = new TemplateMessage("Confirm alt text", confirmTemplate);
         		break;
         	default: 
         		result = new TextMessage(originalMessageText);
         }
-        
-        this.reply(token, result);
     }
 
     @EventMapping
