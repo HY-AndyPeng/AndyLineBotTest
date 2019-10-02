@@ -70,12 +70,10 @@ public class EchoApplication {
         		result = new TextMessage(token);
         		break;
         	case "@Confirm":	
-        		
-
         		ConfirmTemplate confirmTemplate = new ConfirmTemplate(
                         "Do it?",
                         new MessageAction("Yes", "Yes!"),
-                        new DatetimePickerAction("123", "test", "date")  
+                        new MessageAction("No", "No!")
                 );
         		result = new TemplateMessage("Confirm alt text", confirmTemplate);
         		break;
