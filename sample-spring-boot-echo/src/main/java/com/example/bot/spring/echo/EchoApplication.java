@@ -23,6 +23,7 @@ import com.linecorp.bot.model.action.DatetimePickerAction;
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.PostbackEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TemplateMessage;
@@ -68,6 +69,13 @@ public class EchoApplication {
         }
         
         return result;
+    }
+    
+    @EventMapping
+    public Message handlePostbackEvent(PostbackEvent event) {
+        String replyToken = event.getReplyToken();
+        return new TextMessage("Got postback data " + event.getPostbackContent().getData() + ", param " + event
+                .getPostbackContent().getParams().toString());
     }
 
     @EventMapping
