@@ -19,6 +19,7 @@ package com.example.bot.spring.echo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.fet.crm.nspMicro.util.bean.HttpResult;
 import com.linecorp.bot.model.action.DatetimePickerAction;
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.event.Event;
@@ -63,6 +64,10 @@ public class EchoApplication {
                         new DatetimePickerAction("123", "test", "date")
                 );
         		result = new TemplateMessage("Confirm alt text", confirmTemplate);
+        		break;
+        	case "@test":	
+        		HttpResult httpResult = HttpUtil.get("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-F17B9FA6-AE76-4DC5-BF8E-3D3E2EC19F63", null);
+        		result = result.getResult();
         		break;
         	default: 
         		result = new TextMessage(originalMessageText);
