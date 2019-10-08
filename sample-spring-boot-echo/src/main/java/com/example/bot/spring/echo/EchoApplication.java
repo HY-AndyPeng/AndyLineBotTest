@@ -27,6 +27,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.fet.crm.nspMicro.util.bean.HttpResult;
+import com.fet.crm.nspMicro.util.bean.Location;
 import com.fet.crm.nspMicro.util.bean.Records;
 import com.fet.crm.nspMicro.util.bean.Test;
 import com.fet.crm.nspMicro.util.bean.Time;
@@ -82,49 +83,111 @@ public class EchoApplication {
 				try {
 					if (true) {
 						Test test = getWeather("臺北市");
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 						sb.append("臺北市目前").append("\n");
 						if (test.getRecords() != null) {
 							Records records = test.getRecords();
-							List<WeatherElement> weatherElements = records.getWeatherElement();
-	
-							for (WeatherElement weatherElement : weatherElements) {
-								switch (weatherElement.getElementName()) {
-								//天氣
-								case "Wx":
-									sb.append(weatherElement.getElementName());
-									List<Time> times = weatherElement.getTime();
-									Calendar nowCalendar = Calendar.getInstance();
-									Calendar startCalendar = Calendar.getInstance();
-									Calendar endCalendar = Calendar.getInstance();
-									for (Time time : times) {
-										Date startDate = sdf.parse(time.getStartTime());
-										Date endDate = sdf.parse(time.getEndTime());
-										startCalendar.setTime(startDate);
-										endCalendar.setTime(endDate);
-	
-										if (nowCalendar.after(startCalendar) && nowCalendar.before(endCalendar)) {
-											sb.append("天氣:").append(time.getParameter().get("parameterName"));
+							List<Location> locations = records.getLocation();
+							Calendar nowCalendar = Calendar.getInstance();
+							for (Location location : locations) {
+								for(WeatherElement weatherElement: location.getWeatherElement()) {
+									List<Time> times = null;
+									Calendar startCalendar = null;
+									Calendar endCalendar = null;
+									switch (weatherElement.getElementName()) {
+									//天氣
+									case "Wx":
+										times = weatherElement.getTime();
+										startCalendar = Calendar.getInstance();
+										endCalendar = Calendar.getInstance();
+										for (Time time : times) {
+											Date startDate = sdf.parse(time.getStartTime());
+											Date endDate = sdf.parse(time.getEndTime());
+											startCalendar.setTime(startDate);
+											endCalendar.setTime(endDate);
+											if (nowCalendar.before(endCalendar)) {
+												sb.append("天氣:").append(time.getParameter().get("parameterName")).append("\n");
+												break;
+											}
 										}
+
+										break;
+									//降雨機率
+									case "PoP":
+										times = weatherElement.getTime();
+										startCalendar = Calendar.getInstance();
+										endCalendar = Calendar.getInstance();
+										for (Time time : times) {
+											Date startDate = sdf.parse(time.getStartTime());
+											Date endDate = sdf.parse(time.getEndTime());
+											startCalendar.setTime(startDate);
+											endCalendar.setTime(endDate);
+											if (nowCalendar.before(endCalendar)) {
+												sb.append("降雨機率:").append(time.getParameter().get("parameterName")).append("\n");
+												break;
+											}
+										}
+										
+										break;
+									//最低溫度
+									case "MinT":
+										
+										times = weatherElement.getTime();
+										startCalendar = Calendar.getInstance();
+										endCalendar = Calendar.getInstance();
+										for (Time time : times) {
+											Date startDate = sdf.parse(time.getStartTime());
+											Date endDate = sdf.parse(time.getEndTime());
+											startCalendar.setTime(startDate);
+											endCalendar.setTime(endDate);
+											if (nowCalendar.before(endCalendar)) {
+												sb.append("最低溫度:").append(time.getParameter().get("parameterName")).append("\n");
+												break;
+											}
+										}
+										
+										break;
+									//最高溫度
+									case "MaxT":
+										
+										times = weatherElement.getTime();
+										startCalendar = Calendar.getInstance();
+										endCalendar = Calendar.getInstance();
+										for (Time time : times) {
+											Date startDate = sdf.parse(time.getStartTime());
+											Date endDate = sdf.parse(time.getEndTime());
+											startCalendar.setTime(startDate);
+											endCalendar.setTime(endDate);
+											if (nowCalendar.before(endCalendar)) {
+												sb.append("最高溫度:").append(time.getParameter().get("parameterName")).append("\n");
+												break;
+											}
+										}
+										
+										break;
+									//感覺
+									case "CI":
+										
+										times = weatherElement.getTime();
+										startCalendar = Calendar.getInstance();
+										endCalendar = Calendar.getInstance();
+										for (Time time : times) {
+											Date startDate = sdf.parse(time.getStartTime());
+											Date endDate = sdf.parse(time.getEndTime());
+											startCalendar.setTime(startDate);
+											endCalendar.setTime(endDate);
+											if (nowCalendar.before(endCalendar)) {
+												sb.append("體感:").append(time.getParameter().get("parameterName")).append("\n");
+												break;
+											}
+										}
+										
+										break;
 									}
-	
-									break;
-								//降雨機率
-								case "PoP":
-									break;
-								//最低溫度
-								case "MinT":
-									break;
-								//最高溫度
-								case "MaxT":
-									break;
-								//感覺
-								case "CI":
-									break;
 								}
-	
+							
 							}
-	
+
 						}
 					} 
 				} catch (Exception e) {

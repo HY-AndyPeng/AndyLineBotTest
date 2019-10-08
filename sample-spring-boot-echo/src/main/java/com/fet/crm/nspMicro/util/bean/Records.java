@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Records {
 	private String datasetDescription;
-	private List<WeatherElement> weatherElement;
+	private List<Location> location;
 	
 	public String getDatasetDescription() {
 		return datasetDescription;
@@ -12,11 +12,11 @@ public class Records {
 	public void setDatasetDescription(String datasetDescription) {
 		this.datasetDescription = datasetDescription;
 	}
-	public List<WeatherElement> getWeatherElement() {
-		return weatherElement;
+	public List<Location> getLocation() {
+		return location;
 	}
-	public void setWeatherElement(List<WeatherElement> weatherElement) {
-		this.weatherElement = weatherElement;
+	public void setLocation(List<Location> location) {
+		this.location = location;
 	}
 	
 }
