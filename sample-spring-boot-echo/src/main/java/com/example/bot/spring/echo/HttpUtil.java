@@ -16,7 +16,6 @@ import java.util.Set;
 import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -32,6 +31,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.mockito.internal.util.StringUtil;
 
 import com.fet.crm.nspMicro.util.bean.HttpResult;
 
@@ -232,7 +232,8 @@ public class HttpUtil {
 
 			HttpPost httpPost = new HttpPost(url.toString());
 
-			if (!StringUtil.isEmpty(params)) {
+
+			if (null != params && params.trim().length() > 0) {
 				httpPost.setEntity(new StringEntity(params, encode));
 				httpPost.setHeader("Content-type", "application/json");
 			}
@@ -303,7 +304,7 @@ public class HttpUtil {
 		//NSPLogUtil.pdp(HttpUtil.class, false, LogConstant.EventType.INVOKE_WEBSERVICE_CONSUMER + " " + urlString,
 				//MapUtil.objToMap(requestBean), null);
 
-		if (!StringUtils.isEmpty(urlString)) {
+		if (null != urlString && urlString.trim().length() > 0) {
 			try {
 				URL url = new URL(urlString);
 

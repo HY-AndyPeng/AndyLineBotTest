@@ -20,8 +20,8 @@ dependencies {
     compile project(':line-bot-spring-boot')
 
     testImplementation "org.springframework.boot:spring-boot-starter-test"
-    //implementation 'org.apache.commons:commons-lang3:3.6'
-    compile 'org.apache.httpcomponents:httpclient:4.3.1'
-    compile 'org.apache.commons:commons-lang3:3.6'
-
+    implementation 'org.apache.httpcomponents:httpclient:4.3.1'
+	implementation 'org.apache.commons:commons-lang3:3.9'
+	implementation 'com.thoughtworks.xstream:xstream:1.4.8'
+	implementation 'org.apache.axis:axis:1.4'
 }
