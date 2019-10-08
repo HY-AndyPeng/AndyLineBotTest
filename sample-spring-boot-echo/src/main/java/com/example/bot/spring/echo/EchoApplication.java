@@ -72,11 +72,12 @@ public class EchoApplication {
         	case "@test":	
 				try {
 					HttpResult httpResult = HttpUtil.get(
-							"https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-F17B9FA6-AE76-4DC5-BF8E-3D3E2EC19F63",
+							"https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-F17B9FA6-AE76-4DC5-BF8E-3D3E2EC19F63\n" + 
+							"&sort=startTime&locationName=臺北市",
 							params);
 					result = new TextMessage(httpResult.getResult());
 				} catch (Exception e) {
-					// TODO: handle exception
+					result = new TextMessage("發根問題" + e.getMessage());
 				}
 			break;
         	default: 
