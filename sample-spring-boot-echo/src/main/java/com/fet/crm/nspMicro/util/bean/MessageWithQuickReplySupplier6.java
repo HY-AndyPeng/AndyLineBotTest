@@ -45,7 +45,7 @@ public class MessageWithQuickReplySupplier6 implements Supplier<Message> {
                   .build(),
                   QuickReplyItem.builder()
                   .action(new MessageAction("南部", "@北部地區"))
-                  .build()
+                  .build(),
                   QuickReplyItem.builder()
                   .action(new MessageAction("其他", "@其他地區"))
                   .build()
