@@ -24,6 +24,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.fet.crm.nspMicro.util.bean.HttpResult;
 import com.fet.crm.nspMicro.util.bean.Records;
+import com.fet.crm.nspMicro.util.bean.Test;
 import com.linecorp.bot.model.action.DatetimePickerAction;
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.event.Event;
@@ -78,9 +79,9 @@ public class EchoApplication {
 					HttpResult httpResult = HttpUtil.get(
 							"https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001", params);
 					String respon = httpResult.getResult();
-					Records test = JsonUtil.stringToObject(respon, Records.class);
+					Test test = JsonUtil.stringToObject(respon, Test.class);
 					
-					result = new TextMessage(test.getDatasetDescription());
+					result = new TextMessage(test.getRecords().getDatasetDescription());
 				} catch (Exception e) {
 					result = new TextMessage("發根問題" + e.getMessage());
 				}
