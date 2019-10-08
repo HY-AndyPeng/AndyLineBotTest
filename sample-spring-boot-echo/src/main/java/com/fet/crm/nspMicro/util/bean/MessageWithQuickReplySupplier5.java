@@ -35,7 +35,7 @@ public class MessageWithQuickReplySupplier5 implements Supplier<Message> {
     public Message get() {
         final List<QuickReplyItem> items = Arrays.<QuickReplyItem>asList(
                 
-       
+        		QuickReplyItem.builder()
                   .action(new MessageAction("臺南市", "臺南市天氣如何?"))
                   .build(),
                   QuickReplyItem.builder()
@@ -47,7 +47,7 @@ public class MessageWithQuickReplySupplier5 implements Supplier<Message> {
                   .build(),
                   QuickReplyItem.builder()
                   .action(new MessageAction("嘉義市", "嘉義市天氣如何?"))
-                  .build(),
+                  .build()
                               
         );
 
