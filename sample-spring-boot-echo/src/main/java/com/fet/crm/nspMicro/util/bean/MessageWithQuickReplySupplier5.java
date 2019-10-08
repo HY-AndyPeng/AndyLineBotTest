@@ -30,34 +30,24 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.message.quickreply.QuickReply;
 import com.linecorp.bot.model.message.quickreply.QuickReplyItem;
 
-public class MessageWithQuickReplySupplier implements Supplier<Message> {
+public class MessageWithQuickReplySupplier5 implements Supplier<Message> {
     @Override
     public Message get() {
         final List<QuickReplyItem> items = Arrays.<QuickReplyItem>asList(
-                QuickReplyItem.builder()
-	              .action(new MessageAction("宜蘭縣", "宜蘭縣天氣如何?"))
-	              .build(),
-                  QuickReplyItem.builder()
-                  .action(new MessageAction("臺北市", "臺北市天氣如何?"))
+                
+       
+                  .action(new MessageAction("臺南市", "臺南市天氣如何?"))
                   .build(),
                   QuickReplyItem.builder()
-                  .action(new MessageAction("新北市", "新北市天氣如何?"))
+                  .action(new MessageAction("高雄市", "高雄市天氣如何?"))
+                  .build(),
+
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("嘉義縣", "嘉義縣天氣如何?"))
                   .build(),
                   QuickReplyItem.builder()
-                  .action(new MessageAction("桃園市", "桃園市天氣如何?"))
+                  .action(new MessageAction("嘉義市", "嘉義市天氣如何?"))
                   .build(),
-                  QuickReplyItem.builder()
-                  .action(new MessageAction("基隆市", "基隆市天氣如何?"))
-                  .build(),
-                  QuickReplyItem.builder()
-                  .action(new MessageAction("新竹縣", "新竹縣天氣如何?"))
-                  .build(),
-                  QuickReplyItem.builder()
-                  .action(new MessageAction("新竹市", "新竹市天氣如何?"))
-                  .build(),
-                  QuickReplyItem.builder()
-                  .action(new MessageAction("苗栗縣", "苗栗縣天氣如何?"))
-                  .build()
                               
         );
 

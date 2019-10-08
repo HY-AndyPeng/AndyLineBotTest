@@ -17,6 +17,7 @@
 package com.example.bot.spring.echo;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,6 +30,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.fet.crm.nspMicro.util.bean.HttpResult;
 import com.fet.crm.nspMicro.util.bean.Location;
 import com.fet.crm.nspMicro.util.bean.MessageWithQuickReplySupplier;
+import com.fet.crm.nspMicro.util.bean.MessageWithQuickReplySupplier2;
+import com.fet.crm.nspMicro.util.bean.MessageWithQuickReplySupplier3;
+import com.fet.crm.nspMicro.util.bean.MessageWithQuickReplySupplier4;
+import com.fet.crm.nspMicro.util.bean.MessageWithQuickReplySupplier5;
 import com.fet.crm.nspMicro.util.bean.Records;
 import com.fet.crm.nspMicro.util.bean.QueryThirtySixWeather;
 import com.fet.crm.nspMicro.util.bean.Time;
@@ -36,6 +41,8 @@ import com.fet.crm.nspMicro.util.bean.WeatherBo;
 import com.fet.crm.nspMicro.util.bean.WeatherElement;
 import com.linecorp.bot.model.action.DatetimePickerAction;
 import com.linecorp.bot.model.action.MessageAction;
+import com.linecorp.bot.model.action.PostbackAction;
+import com.linecorp.bot.model.action.URIAction;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.PostbackEvent;
@@ -44,6 +51,7 @@ import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.message.quickreply.QuickReply;
+import com.linecorp.bot.model.message.template.ButtonsTemplate;
 import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
@@ -70,7 +78,32 @@ public class EchoApplication {
         		result = new TextMessage("下班簽退已完成，辛苦了哦~~");
         		break;
         	case "@查詢天氣":
+        		ButtonsTemplate buttonTemplate = new ButtonsTemplate("", "", "選擇地區", 
+        				Arrays.asList(
+        						new MessageAction("北部", "@北部地區"),
+                                new MessageAction("中部", "@中部地區"),
+                                new MessageAction("南部", "@南部地區"),
+                                new MessageAction("東部", "@東部地區"),
+                                new MessageAction("其他", "@其他地區")
+                        ));
+                
+        		result = new TemplateMessage("Button alt text", buttonTemplate);
+        		//result = new MessageWithQuickReplySupplier().get();
+        		break;
+        	case "@北部地區":
         		result = new MessageWithQuickReplySupplier().get();
+        		break;
+        	case "@中部地區":
+        		result = new MessageWithQuickReplySupplier2().get();
+        		break;
+        	case "@南部地區":
+        		result = new MessageWithQuickReplySupplier5().get();
+        		break;
+        	case "@其他地區":
+        		result = new MessageWithQuickReplySupplier4().get();
+        		break;
+        	case "@東部地區":
+        		result = new MessageWithQuickReplySupplier3().get();
         		break;
         	case "@ID":
         		result = new TextMessage(event.getSource().getUserId());
@@ -114,34 +147,33 @@ public class EchoApplication {
 	private boolean hasKeyWord(String keyWord) {
     	boolean result = false;
     	
-    	if("天氣".indexOf(keyWord) != -1) {
+    	if(keyWord.indexOf("天氣") != -1) {
     		
-    		if("宜蘭縣".indexOf(keyWord) != -1 ||
-				"花蓮縣".indexOf(keyWord) != -1 ||
-				"臺東縣".indexOf(keyWord) != -1 ||
-				"澎湖縣".indexOf(keyWord) != -1 ||
-				"金門縣".indexOf(keyWord) != -1 ||
-				"連江縣".indexOf(keyWord) != -1 ||
-				"臺北市".indexOf(keyWord) != -1 ||
-				"新北市".indexOf(keyWord) != -1 ||
-				"桃園市".indexOf(keyWord) != -1 ||
-				"臺中市".indexOf(keyWord) != -1 ||
-				"臺南市".indexOf(keyWord) != -1 ||
-				"高雄市".indexOf(keyWord) != -1 ||
-				"基隆市".indexOf(keyWord) != -1 ||
-				"新竹縣".indexOf(keyWord) != -1 ||
-				"新竹市".indexOf(keyWord) != -1 ||
-				"苗栗縣".indexOf(keyWord) != -1 ||
-				"彰化縣".indexOf(keyWord) != -1 ||
-				"南投縣".indexOf(keyWord) != -1 ||
-				"雲林縣".indexOf(keyWord) != -1 ||
-				"嘉義縣".indexOf(keyWord) != -1 ||
-				"嘉義市".indexOf(keyWord) != -1 ||
-				"屏東縣".indexOf(keyWord) != -1 ) {
+    		if(keyWord.indexOf("宜蘭縣") != -1 ||
+				keyWord.indexOf("花蓮縣") != -1 ||
+				keyWord.indexOf("臺東縣") != -1 ||
+				keyWord.indexOf("澎湖縣") != -1 ||
+				keyWord.indexOf("金門縣") != -1 ||
+				keyWord.indexOf("連江縣") != -1 ||
+				keyWord.indexOf("臺北市") != -1 ||
+				keyWord.indexOf("新北市") != -1 ||
+				keyWord.indexOf("桃園市") != -1 ||
+				keyWord.indexOf("臺中市") != -1 ||
+				keyWord.indexOf("臺南市") != -1 ||
+				keyWord.indexOf("高雄市") != -1 ||
+				keyWord.indexOf("基隆市") != -1 ||
+				keyWord.indexOf("新竹縣") != -1 ||
+				keyWord.indexOf("新竹市") != -1 ||
+				keyWord.indexOf("苗栗縣") != -1 ||
+				keyWord.indexOf("彰化縣") != -1 ||
+				keyWord.indexOf("南投縣") != -1 ||
+				keyWord.indexOf("雲林縣") != -1 ||
+				keyWord.indexOf("嘉義縣") != -1 ||
+				keyWord.indexOf("嘉義市") != -1 ||
+				keyWord.indexOf("屏東縣") != -1 ) {
     			result = true;
     		}
     	}
-  
     	return result;
     }
     
