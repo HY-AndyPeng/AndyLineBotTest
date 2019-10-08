@@ -30,17 +30,26 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.message.quickreply.QuickReply;
 import com.linecorp.bot.model.message.quickreply.QuickReplyItem;
 
-public class MessageWithQuickReplySupplier3 implements Supplier<Message> {
+public class MessageWithQuickReplySupplier6 implements Supplier<Message> {
     @Override
     public Message get() {
         final List<QuickReplyItem> items = Arrays.<QuickReplyItem>asList(
-               
-	              QuickReplyItem.builder()
-	              .action(new MessageAction("花蓮縣", "花蓮縣天氣如何?"))
+                QuickReplyItem.builder()
+	              .action(new MessageAction("北部", "@北部地區"))
 	              .build(),
-	              QuickReplyItem.builder()
-	              .action(new MessageAction("臺東縣", "臺東縣天氣如何?"))
-	              .build()             
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("東部", "@東部地區"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("中部", "@中部地區"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("南部", "@北部地區"))
+                  .build()
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("其他", "@其他地區"))
+                  .build()
+                              
         );
 
 
@@ -49,7 +58,7 @@ public class MessageWithQuickReplySupplier3 implements Supplier<Message> {
 
         return TextMessage
                 .builder()
-                .text("請選擇縣市")
+                .text("請選擇地區")
                 .quickReply(quickReply)
                 .build();
     }

@@ -57,7 +57,7 @@ public class MessageWithQuickReplySupplier2 implements Supplier<Message> {
 
         return TextMessage
                 .builder()
-                .text("請選擇地區")
+                .text("請選擇縣市")
                 .quickReply(quickReply)
                 .build();
     }

@@ -79,18 +79,7 @@ public class EchoApplication {
         		result = new TextMessage("下班簽退已完成，辛苦了哦~~");
         		break;
         	case "@查詢天氣":
-        		String imageUrl = createUri("/static/buttons/1040.jpg");
-        		ButtonsTemplate buttonTemplate = new ButtonsTemplate(imageUrl,
-        				"選擇地區", "選擇地區", 
-        				Arrays.asList(
-        						new MessageAction("北部", "@北部地區"),
-                                new MessageAction("中部", "@中部地區"),
-                                new MessageAction("南部", "@南部地區"),
-                                new MessageAction("東部", "@東部地區"),
-                                new MessageAction("其他", "@其他地區")
-                        ));
-                
-        		result = new TemplateMessage("Button alt text", buttonTemplate);
+        		result = new MessageWithQuickReplySupplier6().get();
         		break;
         	case "@北部地區":
         		result = new MessageWithQuickReplySupplier().get();
@@ -130,10 +119,11 @@ public class EchoApplication {
 						if(locationName != null) {
 							WeatherBo weatherBo = getWeather(locationName);
 							
-							sb.append("臺北市目前").append("\n");
+							sb.append(locationName).append("目前").append("\n");
 							sb.append("天氣:").append(weatherBo.getWeather()).append("\n");
 							sb.append("降雨機率:").append(weatherBo.getProbabilityOfPrecipitation()).append("%").append("\n");
-							sb.append("氣溫:").append(weatherBo.getMinTemperature()).append("~").append(weatherBo.getMaxTemperature()).append("\n");
+							sb.append("氣溫:").append(weatherBo.getMinTemperature()).append("~").append(weatherBo.getMaxTemperature()).append("度")
+							.append("\n");
 							sb.append("舒適度:").append(weatherBo.getComfortIndex());
 						}else {
 							sb.append("不好意思，查無資料");
