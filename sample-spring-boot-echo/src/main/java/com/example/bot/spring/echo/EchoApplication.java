@@ -126,14 +126,20 @@ public class EchoApplication {
         		
 				try {
 					if (hasKeyWord(originalMessageText)) {
-						WeatherBo weatherBo = getWeather("臺北市");
+						String locationName = getKeyWordLocationName(originalMessageText);
+						if(locationName != null) {
+							WeatherBo weatherBo = getWeather(locationName);
+							
+							sb.append("臺北市目前").append("\n");
+							sb.append("天氣:").append(weatherBo.getWeather()).append("\n");
+							sb.append("降雨機率:").append(weatherBo.getProbabilityOfPrecipitation()).append("%").append("\n");
+							sb.append("氣溫:").append(weatherBo.getMinTemperature()).append("~").append(weatherBo.getMaxTemperature()).append("\n");
+							sb.append("舒適度:").append(weatherBo.getComfortIndex());
+						}else {
+							sb.append("不好意思，查無資料");
+						}
 						
-						sb.append("臺北市目前").append("\n");
-						sb.append("天氣:").append(weatherBo.getWeather()).append("\n");
-						sb.append("降雨機率:").append(weatherBo.getProbabilityOfPrecipitation()).append("%").append("\n");
-						sb.append("氣溫:").append(weatherBo.getMinTemperature()).append("~").append(weatherBo.getMaxTemperature()).append("\n");
-						sb.append("舒適度:").append(weatherBo.getComfortIndex());
-					
+						
 						result = new TextMessage(sb.toString()); 
 					} 
 				} catch (Exception e) {
@@ -145,7 +151,82 @@ public class EchoApplication {
         return result;
     }
     
-    @SuppressWarnings("unused")
+    private String getKeyWordLocationName(String keyWord) {
+    	String result = null;
+    	
+    	if(keyWord.indexOf("宜蘭縣") != -1) {
+    		result = "宜蘭縣";
+    	}
+    	
+    	if(keyWord.indexOf("花蓮縣") != -1) {
+    		result = "花蓮縣";
+    	}
+		
+    	if(keyWord.indexOf("臺東縣") != -1) {
+    		result = "臺東縣";
+    	}
+    	
+		if(keyWord.indexOf("澎湖縣") != -1) {
+			result = "澎湖縣";		
+		}
+		if(keyWord.indexOf("金門縣") != -1) {
+			result = "金門縣";
+		}
+		if(keyWord.indexOf("連江縣") != -1) {
+			result = "連江縣";
+		}
+		if(keyWord.indexOf("臺北市") != -1) {
+			result = "臺北市";
+		}
+		if(keyWord.indexOf("新北市") != -1) {
+			result = "新北市";
+		}
+		if(keyWord.indexOf("桃園市") != -1) {
+			result = "桃園市";
+		}
+		if(keyWord.indexOf("臺中市") != -1) {
+			result = "臺中市";
+		}
+		if(keyWord.indexOf("臺南市") != -1) {
+			result = "臺南市";
+		}
+		if(keyWord.indexOf("高雄市") != -1) {
+			result = "高雄市";
+		}
+		if(keyWord.indexOf("基隆市") != -1) {
+			result = "基隆市";
+		}
+		if(keyWord.indexOf("新竹縣") != -1) {
+			result = "新竹縣";
+		}
+		if(keyWord.indexOf("新竹市") != -1) {
+			result = "新竹市";
+		}
+		if(keyWord.indexOf("苗栗縣") != -1) {
+			result = "苗栗縣";
+		}
+		if(keyWord.indexOf("彰化縣") != -1) {
+			result = "彰化縣";
+		}
+		if(keyWord.indexOf("南投縣") != -1) {
+			result = "南投縣";
+		}
+		if(keyWord.indexOf("雲林縣") != -1) {
+			result = "雲林縣";
+		}
+		if(keyWord.indexOf("嘉義縣") != -1) {
+			result = "嘉義縣";
+		}
+		if(keyWord.indexOf("嘉義市") != -1) {
+			result = "嘉義市";
+		}
+		if(keyWord.indexOf("屏東縣") != -1) {
+			result = "屏東縣";
+		}
+		return result;
+	}
+
+	@SuppressWarnings("unused")
 	private boolean hasKeyWord(String keyWord) {
     	boolean result = false;
     	
