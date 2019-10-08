@@ -40,6 +40,7 @@ public class NSPXmlUtil {
 				// Integer 轉換會噴 自訂轉換
 				xstream.registerConverter(new Converter() {
 
+					@SuppressWarnings("rawtypes")
 					public boolean canConvert(Class type) {
 						return type.equals(Integer.class);
 					}

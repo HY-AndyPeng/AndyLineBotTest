@@ -16,6 +16,9 @@
 
 package com.example.bot.spring.echo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -46,6 +49,7 @@ public class EchoApplication {
         Message result = null;
         final String originalMessageText = event.getMessage().getText();
         final String token = event.getReplyToken();
+        Map<String, String> params = new HashMap<String, String>();
         
         switch(originalMessageText) {
         	case "87":
@@ -66,7 +70,7 @@ public class EchoApplication {
         		result = new TemplateMessage("Confirm alt text", confirmTemplate);
         		break;
         	case "@test":	
-        		HttpResult httpResult = HttpUtil.get("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-F17B9FA6-AE76-4DC5-BF8E-3D3E2EC19F63", null);
+        		HttpResult httpResult = HttpUtil.get("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-F17B9FA6-AE76-4DC5-BF8E-3D3E2EC19F63", params);
         		result = new TextMessage(httpResult.getResult());
         		break;
         	default: 
