@@ -35,26 +35,89 @@ public class MessageWithQuickReplySupplier implements Supplier<Message> {
     public Message get() {
         final List<QuickReplyItem> items = Arrays.<QuickReplyItem>asList(
                 QuickReplyItem.builder()
-                              .action(new MessageAction("MessageAction", "MessageAction"))
-                              .build(),
-                QuickReplyItem.builder()
-                              .action(CameraAction.withLabel("CameraAction"))
-                              .build(),
-                QuickReplyItem.builder()
-                              .action(CameraRollAction.withLabel("CemeraRollAction"))
-                              .build(),
-                QuickReplyItem.builder()
-                              .action(LocationAction.withLabel("Location"))
-                              .build(),
-                QuickReplyItem.builder()
-                              .action(PostbackAction.builder()
-                                                    .label("PostbackAction")
-                                                    .text("PostbackAction clicked")
-                                                    .data("{PostbackAction: true}")
-                                                    .build())
-                              .build()
+	              .action(new MessageAction("宜蘭縣天氣如何?", "宜蘭縣天氣如何?"))
+	              .build(),
+	              QuickReplyItem.builder()
+	              .action(new MessageAction("花蓮縣天氣如何?", "花蓮縣天氣如何?"))
+	              .build(),
+	              QuickReplyItem.builder()
+	              .action(new MessageAction("臺東縣天氣如何?", "臺東縣天氣如何?"))
+	              .build(),
+	              QuickReplyItem.builder()
+                  .action(new MessageAction("澎湖縣天氣如何?", "澎湖縣天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("金門縣天氣如何?", "金門縣天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("連江縣天氣如何?", "連江縣天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("臺北市天氣如何?", "臺北市天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("新北市天氣如何?", "新北市天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("桃園市天氣如何?", "桃園市天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("臺中市天氣如何?", "臺中市天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("臺南市天氣如何?", "臺南市天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("高雄市天氣如何?", "高雄市天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("基隆市天氣如何?", "基隆市天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("新竹縣天氣如何?", "新竹縣天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("苗栗縣天氣如何?", "苗栗縣天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("彰化縣天氣如何?", "彰化縣天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("南投縣天氣如何?", "南投縣天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("雲林縣天氣如何?", "雲林縣天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("嘉義縣天氣如何?", "嘉義縣天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("嘉義市天氣如何?", "嘉義市天氣如何?"))
+                  .build(),
+                  QuickReplyItem.builder()
+                  .action(new MessageAction("屏東縣天氣如何?", "屏東縣天氣如何?"))
+                  .build()
+                              
+//                QuickReplyItem.builder()
+//                              .action(CameraAction.withLabel("CameraAction"))
+//                              .build(),
+//                QuickReplyItem.builder()
+//                              .action(CameraRollAction.withLabel("CemeraRollAction"))
+//                              .build(),
+//                QuickReplyItem.builder()
+//                              .action(LocationAction.withLabel("Location"))
+//                              .build(),
+//                QuickReplyItem.builder()
+//                              .action(PostbackAction.builder()
+//                                                    .label("PostbackAction")
+//                                                    .text("PostbackAction clicked")
+//                                                    .data("{PostbackAction: true}")
+//                                                    .build())
+//                              .build()
         );
 
+
+        
         final QuickReply quickReply = QuickReply.items(items);
 
         return TextMessage
