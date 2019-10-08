@@ -29,8 +29,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.fet.crm.nspMicro.util.bean.HttpResult;
 import com.fet.crm.nspMicro.util.bean.Location;
 import com.fet.crm.nspMicro.util.bean.Records;
-import com.fet.crm.nspMicro.util.bean.Test;
+import com.fet.crm.nspMicro.util.bean.QueryThirtySixWeather;
 import com.fet.crm.nspMicro.util.bean.Time;
+import com.fet.crm.nspMicro.util.bean.WeatherBo;
 import com.fet.crm.nspMicro.util.bean.WeatherElement;
 import com.linecorp.bot.model.action.DatetimePickerAction;
 import com.linecorp.bot.model.action.MessageAction;
@@ -60,8 +61,14 @@ public class EchoApplication {
         final String token = event.getReplyToken();
         
         switch(originalMessageText) {
-        	case "87":
-        		result = new TextMessage("你全家都87");
+        	case "我上班瞜!":
+        		result = new TextMessage("上班簽到已完成，請上班加油哦~~");
+        		break;
+        	case "我下班瞜!":
+        		result = new TextMessage("下班簽退已完成，辛苦了哦~~");
+        		break;
+        	case "@查詢天氣":
+        		
         		break;
         	case "@ID":
         		result = new TextMessage(event.getSource().getUserId());
@@ -81,114 +88,16 @@ public class EchoApplication {
         		StringBuffer sb = new StringBuffer();
         		
 				try {
-					if (true) {
-						Test test = getWeather("臺北市");
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					if (hasKeyWord(originalMessageText)) {
+						WeatherBo weatherBo = getWeather("臺北市");
+						
 						sb.append("臺北市目前").append("\n");
-						if (test.getRecords() != null) {
-							Records records = test.getRecords();
-							List<Location> locations = records.getLocation();
-							Calendar nowCalendar = Calendar.getInstance();
-							for (Location location : locations) {
-								for(WeatherElement weatherElement: location.getWeatherElement()) {
-									List<Time> times = null;
-									Calendar startCalendar = null;
-									Calendar endCalendar = null;
-									switch (weatherElement.getElementName()) {
-									//天氣
-									case "Wx":
-										times = weatherElement.getTime();
-										startCalendar = Calendar.getInstance();
-										endCalendar = Calendar.getInstance();
-										for (Time time : times) {
-											Date startDate = sdf.parse(time.getStartTime());
-											Date endDate = sdf.parse(time.getEndTime());
-											startCalendar.setTime(startDate);
-											endCalendar.setTime(endDate);
-											if (nowCalendar.before(endCalendar)) {
-												sb.append("天氣:").append(time.getParameter().get("parameterName")).append("\n");
-												break;
-											}
-										}
-
-										break;
-									//降雨機率
-									case "PoP":
-										times = weatherElement.getTime();
-										startCalendar = Calendar.getInstance();
-										endCalendar = Calendar.getInstance();
-										for (Time time : times) {
-											Date startDate = sdf.parse(time.getStartTime());
-											Date endDate = sdf.parse(time.getEndTime());
-											startCalendar.setTime(startDate);
-											endCalendar.setTime(endDate);
-											if (nowCalendar.before(endCalendar)) {
-												sb.append("降雨機率:").append(time.getParameter().get("parameterName")).append("\n");
-												break;
-											}
-										}
-										
-										break;
-									//最低溫度
-									case "MinT":
-										
-										times = weatherElement.getTime();
-										startCalendar = Calendar.getInstance();
-										endCalendar = Calendar.getInstance();
-										for (Time time : times) {
-											Date startDate = sdf.parse(time.getStartTime());
-											Date endDate = sdf.parse(time.getEndTime());
-											startCalendar.setTime(startDate);
-											endCalendar.setTime(endDate);
-											if (nowCalendar.before(endCalendar)) {
-												sb.append("最低溫度:").append(time.getParameter().get("parameterName")).append("\n");
-												break;
-											}
-										}
-										
-										break;
-									//最高溫度
-									case "MaxT":
-										
-										times = weatherElement.getTime();
-										startCalendar = Calendar.getInstance();
-										endCalendar = Calendar.getInstance();
-										for (Time time : times) {
-											Date startDate = sdf.parse(time.getStartTime());
-											Date endDate = sdf.parse(time.getEndTime());
-											startCalendar.setTime(startDate);
-											endCalendar.setTime(endDate);
-											if (nowCalendar.before(endCalendar)) {
-												sb.append("最高溫度:").append(time.getParameter().get("parameterName")).append("\n");
-												break;
-											}
-										}
-										
-										break;
-									//感覺
-									case "CI":
-										
-										times = weatherElement.getTime();
-										startCalendar = Calendar.getInstance();
-										endCalendar = Calendar.getInstance();
-										for (Time time : times) {
-											Date startDate = sdf.parse(time.getStartTime());
-											Date endDate = sdf.parse(time.getEndTime());
-											startCalendar.setTime(startDate);
-											endCalendar.setTime(endDate);
-											if (nowCalendar.before(endCalendar)) {
-												sb.append("體感:").append(time.getParameter().get("parameterName")).append("\n");
-												break;
-											}
-										}
-										
-										break;
-									}
-								}
-							
-							}
-
-						}
+						sb.append("天氣:").append(weatherBo.getWeather()).append("\n");
+						sb.append("降雨機率:").append(weatherBo.getProbabilityOfPrecipitation()).append("%").append("\n");
+						sb.append("氣溫:").append(weatherBo.getMinTemperature()).append("~").append(weatherBo.getMaxTemperature()).append("\n");
+						sb.append("舒適度:").append(weatherBo.getComfortIndex());
+					
+						result = new TextMessage(sb.toString()); 
 					} 
 				} catch (Exception e) {
 					sb.append(e.getMessage());
@@ -201,20 +110,155 @@ public class EchoApplication {
     
     @SuppressWarnings("unused")
 	private boolean hasKeyWord(String keyWord) {
+    	boolean result = false;
     	
-    	return true;
+    	if("天氣".indexOf(keyWord) != -1) {
+    		
+    		if("宜蘭縣".indexOf(keyWord) != -1 &&
+				"花蓮縣".indexOf(keyWord) != -1 &&
+				"臺東縣".indexOf(keyWord) != -1 &&
+				"澎湖縣".indexOf(keyWord) != -1 &&
+				"金門縣".indexOf(keyWord) != -1 &&
+				"連江縣".indexOf(keyWord) != -1 &&
+				"臺北市".indexOf(keyWord) != -1 &&
+				"新北市".indexOf(keyWord) != -1 &&
+				"桃園市".indexOf(keyWord) != -1 &&
+				"臺中市".indexOf(keyWord) != -1 &&
+				"臺南市".indexOf(keyWord) != -1 &&
+				"高雄市".indexOf(keyWord) != -1 &&
+				"基隆市".indexOf(keyWord) != -1 &&
+				"新竹縣".indexOf(keyWord) != -1 &&
+				"新竹市".indexOf(keyWord) != -1 &&
+				"苗栗縣".indexOf(keyWord) != -1 &&
+				"彰化縣".indexOf(keyWord) != -1 &&
+				"南投縣".indexOf(keyWord) != -1 &&
+				"雲林縣".indexOf(keyWord) != -1 &&
+				"嘉義縣".indexOf(keyWord) != -1 &&
+				"嘉義市".indexOf(keyWord) != -1 &&
+				"屏東縣".indexOf(keyWord) != -1 ) {
+    			result = true;
+    		}
+    	}
+  
+    	return result;
     }
     
-    private Test getWeather(String locationName) throws Exception {
-    	Test result = null;
+    private WeatherBo getWeather(String locationName) throws Exception {
+    	WeatherBo result = new WeatherBo();
     	Map<String, String> params = new HashMap<String, String>();
     	params.put("Authorization", "CWB-F17B9FA6-AE76-4DC5-BF8E-3D3E2EC19F63");
 		params.put("sort", "startTime");
-		params.put("locationName", "臺北市");
+		params.put("locationName", locationName);
 		HttpResult httpResult = HttpUtil.get(
 				"https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001", params);
 		String respon = httpResult.getResult();
-		result = JsonUtil.stringToObject(respon, Test.class);
+		QueryThirtySixWeather queryThirtySixWeather = JsonUtil.stringToObject(respon, QueryThirtySixWeather.class);
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		if (queryThirtySixWeather.getRecords() != null) {
+			Records records = queryThirtySixWeather.getRecords();
+			List<Location> locations = records.getLocation();
+			Calendar nowCalendar = Calendar.getInstance();
+			for (Location location : locations) {
+				result.setLocationName(location.getLocationName());
+				for(WeatherElement weatherElement: location.getWeatherElement()) {
+					List<Time> times = null;
+					Calendar startCalendar = null;
+					Calendar endCalendar = null;
+					switch (weatherElement.getElementName()) {
+					//天氣
+					case "Wx":
+						times = weatherElement.getTime();
+						startCalendar = Calendar.getInstance();
+						endCalendar = Calendar.getInstance();
+						for (Time time : times) {
+							Date startDate = sdf.parse(time.getStartTime());
+							Date endDate = sdf.parse(time.getEndTime());
+							startCalendar.setTime(startDate);
+							endCalendar.setTime(endDate);
+							if (nowCalendar.before(endCalendar)) {
+								result.setWeather(time.getParameter().get("parameterName"));
+								break;
+							}
+						}
+
+						break;
+					//降雨機率
+					case "PoP":
+						times = weatherElement.getTime();
+						startCalendar = Calendar.getInstance();
+						endCalendar = Calendar.getInstance();
+						for (Time time : times) {
+							Date startDate = sdf.parse(time.getStartTime());
+							Date endDate = sdf.parse(time.getEndTime());
+							startCalendar.setTime(startDate);
+							endCalendar.setTime(endDate);
+							if (nowCalendar.before(endCalendar)) {
+								result.setProbabilityOfPrecipitation(time.getParameter().get("parameterName"));
+								break;
+							}
+						}
+						
+						break;
+					//最低溫度
+					case "MinT":
+						
+						times = weatherElement.getTime();
+						startCalendar = Calendar.getInstance();
+						endCalendar = Calendar.getInstance();
+						for (Time time : times) {
+							Date startDate = sdf.parse(time.getStartTime());
+							Date endDate = sdf.parse(time.getEndTime());
+							startCalendar.setTime(startDate);
+							endCalendar.setTime(endDate);
+							if (nowCalendar.before(endCalendar)) {
+								result.setMinTemperature(time.getParameter().get("parameterName"));
+								break;
+							}
+						}
+						
+						break;
+					//最高溫度
+					case "MaxT":
+						
+						times = weatherElement.getTime();
+						startCalendar = Calendar.getInstance();
+						endCalendar = Calendar.getInstance();
+						for (Time time : times) {
+							Date startDate = sdf.parse(time.getStartTime());
+							Date endDate = sdf.parse(time.getEndTime());
+							startCalendar.setTime(startDate);
+							endCalendar.setTime(endDate);
+							if (nowCalendar.before(endCalendar)) {
+								result.setMaxTemperature(time.getParameter().get("parameterName"));
+								break;
+							}
+						}
+						
+						break;
+					//感覺
+					case "CI":
+						times = weatherElement.getTime();
+						startCalendar = Calendar.getInstance();
+						endCalendar = Calendar.getInstance();
+						for (Time time : times) {
+							Date startDate = sdf.parse(time.getStartTime());
+							Date endDate = sdf.parse(time.getEndTime());
+							startCalendar.setTime(startDate);
+							endCalendar.setTime(endDate);
+							if (nowCalendar.before(endCalendar)) {
+								result.setComfortIndex(time.getParameter().get("parameterName"));
+								break;
+							}
+						}
+						break;
+					}
+				}
+			
+			}
+
+		}
 		
 		return result;
     }

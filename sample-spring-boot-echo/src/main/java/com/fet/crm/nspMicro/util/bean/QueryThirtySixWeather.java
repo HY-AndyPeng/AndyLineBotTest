@@ -1,6 +1,6 @@
 package com.fet.crm.nspMicro.util.bean;
 
-public class Test {
+public class QueryThirtySixWeather {
 	
 	private boolean success;
 	private Records records;
