@@ -71,10 +71,11 @@ public class EchoApplication {
         		break;
         	case "@test":	
 				try {
+					params.put("Authorization", "CWB-F17B9FA6-AE76-4DC5-BF8E-3D3E2EC19F63");
+					params.put("sort", "startTime");
+					params.put("locationName", "臺北市");
 					HttpResult httpResult = HttpUtil.get(
-							"https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-F17B9FA6-AE76-4DC5-BF8E-3D3E2EC19F63\n" + 
-							"&sort=startTime&locationName=臺北市",
-							params);
+							"https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001", params);
 					result = new TextMessage(httpResult.getResult());
 				} catch (Exception e) {
 					result = new TextMessage("發根問題" + e.getMessage());
