@@ -86,7 +86,7 @@ public class NSPXmlUtil {
 	 *            別名名稱
 	 * @return xml string
 	 */
-	public static String parseBeanToXml(Object beanObject, boolean filterTitle, boolean newLine, Class clazz,
+	public static String parseBeanToXml(Object beanObject, boolean filterTitle, boolean newLine, Class<?> clazz,
 			String aliasStr) {
 		String result = null;
 		if (beanObject != null) {
