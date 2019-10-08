@@ -92,7 +92,7 @@ public class EchoApplication {
 								switch (weatherElement.getElementName()) {
 								//天氣
 								case "Wx":
-	
+									sb.append(weatherElement.getElementName());
 									List<Time> times = weatherElement.getTime();
 									Calendar nowCalendar = Calendar.getInstance();
 									Calendar startCalendar = Calendar.getInstance();
