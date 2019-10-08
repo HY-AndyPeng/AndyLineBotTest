@@ -28,6 +28,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.fet.crm.nspMicro.util.bean.HttpResult;
 import com.fet.crm.nspMicro.util.bean.Location;
+import com.fet.crm.nspMicro.util.bean.MessageWithQuickReplySupplier;
 import com.fet.crm.nspMicro.util.bean.Records;
 import com.fet.crm.nspMicro.util.bean.QueryThirtySixWeather;
 import com.fet.crm.nspMicro.util.bean.Time;
@@ -42,6 +43,7 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
+import com.linecorp.bot.model.message.quickreply.QuickReply;
 import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
@@ -68,7 +70,7 @@ public class EchoApplication {
         		result = new TextMessage("下班簽退已完成，辛苦了哦~~");
         		break;
         	case "@查詢天氣":
-        		
+        		result = new MessageWithQuickReplySupplier().get();
         		break;
         	case "@ID":
         		result = new TextMessage(event.getSource().getUserId());
