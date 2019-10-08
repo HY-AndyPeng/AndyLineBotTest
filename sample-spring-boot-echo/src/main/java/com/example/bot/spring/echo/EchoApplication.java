@@ -76,61 +76,61 @@ public class EchoApplication {
                 );
         		result = new TemplateMessage("Confirm alt text", confirmTemplate);
         		break;
-			break;
         	default: 
         		StringBuffer sb = new StringBuffer();
         		
-        		if(true) {
-        			Test test = getWeather("臺北市");
-        			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        			sb.append("臺北市目前").append("\n");
-        			if(test.getRecords() != null) {
-        				Records records = test.getRecords();
-        				List<WeatherElement> weatherElements = records.getWeatherElement();
-        				
-        				for(WeatherElement weatherElement: weatherElements) {
-        					switch(weatherElement.getElementName()) {
-        						//天氣
-        						case "Wx":
-        				
-        							List<Time> times = weatherElement.getTime();
-        							Calendar nowCalendar = Calendar.getInstance();
-        							Calendar startCalendar = Calendar.getInstance();
-    								Calendar endCalendar = Calendar.getInstance();
-        							for(Time time : times) {
-        								Date startDate = sdf.parse(time.getStartTime());
-        								Date endDate = sdf.parse(time.getEndTime());
-        								startCalendar.setTime(startDate);
-        								endCalendar.setTime(endDate);
-        								
-        								if(nowCalendar.after(startCalendar) && nowCalendar.before(endCalendar)) {
-        									sb.append("天氣:").append(time.getParameter().get("parameterName"));
-        								}
-        							}
-        							
-        							break;
-        						//降雨機率
-        						case "PoP":	
-        							break;
-        						//最低溫度
-        						case "MinT":
-        							break;
-        						//最高溫度
-        						case "MaxT":
-        							break;
-        						//感覺
-        						case "CI":
-        							break;
-        					}
-        					
-        				}
-
-        			}
-        			
-        		}
-        		
-        		
-        		result = new TextMessage(sb.toString());
+				try {
+					if (true) {
+						Test test = getWeather("臺北市");
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+						sb.append("臺北市目前").append("\n");
+						if (test.getRecords() != null) {
+							Records records = test.getRecords();
+							List<WeatherElement> weatherElements = records.getWeatherElement();
+	
+							for (WeatherElement weatherElement : weatherElements) {
+								switch (weatherElement.getElementName()) {
+								//天氣
+								case "Wx":
+	
+									List<Time> times = weatherElement.getTime();
+									Calendar nowCalendar = Calendar.getInstance();
+									Calendar startCalendar = Calendar.getInstance();
+									Calendar endCalendar = Calendar.getInstance();
+									for (Time time : times) {
+										Date startDate = sdf.parse(time.getStartTime());
+										Date endDate = sdf.parse(time.getEndTime());
+										startCalendar.setTime(startDate);
+										endCalendar.setTime(endDate);
+	
+										if (nowCalendar.after(startCalendar) && nowCalendar.before(endCalendar)) {
+											sb.append("天氣:").append(time.getParameter().get("parameterName"));
+										}
+									}
+	
+									break;
+								//降雨機率
+								case "PoP":
+									break;
+								//最低溫度
+								case "MinT":
+									break;
+								//最高溫度
+								case "MaxT":
+									break;
+								//感覺
+								case "CI":
+									break;
+								}
+	
+							}
+	
+						}
+					} 
+				} catch (Exception e) {
+					sb.append(e.getMessage());
+				}
+			result = new TextMessage(sb.toString());
         }
         
         return result;
