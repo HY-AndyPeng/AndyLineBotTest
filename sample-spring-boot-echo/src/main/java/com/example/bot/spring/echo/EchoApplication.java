@@ -23,6 +23,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.fet.crm.nspMicro.util.bean.HttpResult;
+import com.fet.crm.nspMicro.util.bean.Records;
 import com.linecorp.bot.model.action.DatetimePickerAction;
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.event.Event;
@@ -76,8 +77,10 @@ public class EchoApplication {
 					params.put("locationName", "臺北市");
 					HttpResult httpResult = HttpUtil.get(
 							"https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001", params);
+					String respon = httpResult.getResult();
+					Records test = JsonUtil.stringToObject(respon, Records.class);
 					
-					result = new TextMessage(String.valueOf(httpResult.getStatus()));
+					result = new TextMessage(test.getDatasetDescription());
 				} catch (Exception e) {
 					result = new TextMessage("發根問題" + e.getMessage());
 				}
