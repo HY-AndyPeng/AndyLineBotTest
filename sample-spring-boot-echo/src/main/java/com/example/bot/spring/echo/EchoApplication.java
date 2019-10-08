@@ -67,7 +67,7 @@ public class EchoApplication {
         		break;
         	case "@test":	
         		HttpResult httpResult = HttpUtil.get("https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-F17B9FA6-AE76-4DC5-BF8E-3D3E2EC19F63", null);
-        		result = result.getResult();
+        		result = new TextMessage(httpResult.getResult());
         		break;
         	default: 
         		result = new TextMessage(originalMessageText);
