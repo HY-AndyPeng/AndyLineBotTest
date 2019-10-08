@@ -76,7 +76,8 @@ public class EchoApplication {
 					params.put("locationName", "臺北市");
 					HttpResult httpResult = HttpUtil.get(
 							"https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001", params);
-					result = new TextMessage(httpResult.getResult());
+					
+					result = new TextMessage(String.valueOf(httpResult.getStatus()));
 				} catch (Exception e) {
 					result = new TextMessage("發根問題" + e.getMessage());
 				}
