@@ -35,6 +35,7 @@ import com.fet.crm.nspMicro.util.bean.MessageWithQuickReplySupplier2;
 import com.fet.crm.nspMicro.util.bean.MessageWithQuickReplySupplier3;
 import com.fet.crm.nspMicro.util.bean.MessageWithQuickReplySupplier4;
 import com.fet.crm.nspMicro.util.bean.MessageWithQuickReplySupplier5;
+import com.fet.crm.nspMicro.util.bean.MessageWithQuickReplySupplier6;
 import com.fet.crm.nspMicro.util.bean.Records;
 import com.fet.crm.nspMicro.util.bean.QueryThirtySixWeather;
 import com.fet.crm.nspMicro.util.bean.Time;
