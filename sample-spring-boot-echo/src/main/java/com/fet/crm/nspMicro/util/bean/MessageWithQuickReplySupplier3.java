@@ -49,7 +49,7 @@ public class MessageWithQuickReplySupplier3 implements Supplier<Message> {
 
         return TextMessage
                 .builder()
-                .text("Message with QuickReply")
+                .text("請選擇地區")
                 .quickReply(quickReply)
                 .build();
     }

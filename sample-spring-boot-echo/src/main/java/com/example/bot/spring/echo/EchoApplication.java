@@ -26,6 +26,7 @@ import java.util.Map;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fet.crm.nspMicro.util.bean.HttpResult;
 import com.fet.crm.nspMicro.util.bean.Location;
@@ -78,7 +79,9 @@ public class EchoApplication {
         		result = new TextMessage("下班簽退已完成，辛苦了哦~~");
         		break;
         	case "@查詢天氣":
-        		ButtonsTemplate buttonTemplate = new ButtonsTemplate("", "", "選擇地區", 
+        		String imageUrl = createUri("/static/buttons/1040.jpg");
+        		ButtonsTemplate buttonTemplate = new ButtonsTemplate(imageUrl,
+        				"選擇地區", "選擇地區", 
         				Arrays.asList(
         						new MessageAction("北部", "@北部地區"),
                                 new MessageAction("中部", "@中部地區"),
@@ -88,7 +91,6 @@ public class EchoApplication {
                         ));
                 
         		result = new TemplateMessage("Button alt text", buttonTemplate);
-        		//result = new MessageWithQuickReplySupplier().get();
         		break;
         	case "@北部地區":
         		result = new MessageWithQuickReplySupplier().get();
@@ -295,6 +297,12 @@ public class EchoApplication {
 		}
 		
 		return result;
+    }
+    
+    private static String createUri(String path) {
+        return ServletUriComponentsBuilder.fromCurrentContextPath()
+                                          .path(path).build()
+                                          .toUriString();
     }
     
     @EventMapping
