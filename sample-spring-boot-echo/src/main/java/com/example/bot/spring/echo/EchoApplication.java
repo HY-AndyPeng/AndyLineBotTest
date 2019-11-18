@@ -73,7 +73,7 @@ public class EchoApplication {
     private LineMessagingClient lineMessagingClient;
     
     @EventMapping
-    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         System.out.println("event: " + event);
         Message result = null;
         final String originalMessageText = event.getMessage().getText();
@@ -148,9 +148,8 @@ public class EchoApplication {
 			result = new TextMessage(sb.toString());
         }
         
-        BotApiResponse apiResponse = lineMessagingClient
-                .replyMessage(new ReplyMessage(token, result))
-                .get();
+        //BotApiResponse apiResponse = lineMessagingClient.replyMessage(new ReplyMessage(token, result)).get();
+        return result;
     }
     
     private String getKeyWordLocationName(String keyWord) {
