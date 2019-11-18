@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -41,6 +42,8 @@ import com.fet.crm.nspMicro.util.bean.QueryThirtySixWeather;
 import com.fet.crm.nspMicro.util.bean.Time;
 import com.fet.crm.nspMicro.util.bean.WeatherBo;
 import com.fet.crm.nspMicro.util.bean.WeatherElement;
+import com.linecorp.bot.client.LineMessagingClient;
+import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.action.DatetimePickerAction;
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.action.PostbackAction;
@@ -55,6 +58,7 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.message.quickreply.QuickReply;
 import com.linecorp.bot.model.message.template.ButtonsTemplate;
 import com.linecorp.bot.model.message.template.ConfirmTemplate;
+import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
@@ -65,12 +69,17 @@ public class EchoApplication {
         SpringApplication.run(EchoApplication.class, args);
     }
 
+    @Autowired
+    private LineMessagingClient lineMessagingClient;
+    
     @EventMapping
-    public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         System.out.println("event: " + event);
         Message result = null;
         final String originalMessageText = event.getMessage().getText();
         final String token = event.getReplyToken();
+        
+        event.getReplyToken();
         
         switch(originalMessageText) {
         	case "我上班瞜!":
@@ -139,7 +148,9 @@ public class EchoApplication {
 			result = new TextMessage(sb.toString());
         }
         
-        return result;
+        BotApiResponse apiResponse = lineMessagingClient
+                .replyMessage(new ReplyMessage(token, result))
+                .get();
     }
     
     private String getKeyWordLocationName(String keyWord) {
