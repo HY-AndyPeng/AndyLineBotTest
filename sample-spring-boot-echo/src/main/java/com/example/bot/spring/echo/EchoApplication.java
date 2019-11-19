@@ -81,7 +81,7 @@ public class EchoApplication {
         
         event.getReplyToken();
         
-        lineMessagingClient.replyMessage(new ReplyMessage(token, new TextMessage(originalMessageText))).get();
+//        lineMessagingClient.replyMessage(new ReplyMessage(token, new TextMessage(originalMessageText))).get();
 //        
 //        switch(originalMessageText) {
 //        	case "我上班瞜!":
