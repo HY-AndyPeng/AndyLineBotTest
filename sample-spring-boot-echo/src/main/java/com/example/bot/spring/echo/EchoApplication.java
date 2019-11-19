@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -73,85 +74,86 @@ public class EchoApplication {
     private LineMessagingClient lineMessagingClient;
     
     @EventMapping
-    public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         System.out.println("event: " + event);
         Message result = null;
         final String originalMessageText = event.getMessage().getText();
         final String token = event.getReplyToken();
         
-        event.getReplyToken();
+        switch(originalMessageText) {
+        	case "我上班瞜!":
+        		result = new TextMessage("上班簽到已完成，請上班加油哦~~");
+        		break;
+        	case "我下班瞜!":
+        		result = new TextMessage("下班簽退已完成，辛苦了哦~~");
+        		break;
+        	case "@查詢天氣":
+        		result = new MessageWithQuickReplySupplier6().get();
+        		break;
+        	case "@北部地區":
+        		result = new MessageWithQuickReplySupplier().get();
+        		break;
+        	case "@中部地區":
+        		result = new MessageWithQuickReplySupplier2().get();
+        		break;
+        	case "@南部地區":
+        		result = new MessageWithQuickReplySupplier5().get();
+        		break;
+        	case "@其他地區":
+        		result = new MessageWithQuickReplySupplier4().get();
+        		break;
+        	case "@東部地區":
+        		result = new MessageWithQuickReplySupplier3().get();
+        		break;
+        	case "@ID":
+        		result = new TextMessage(event.getSource().getUserId());
+        		break;
+        	case "token":
+        		result = new TextMessage(token);
+        		break;
+        	case "@Confirm":	
+        		ConfirmTemplate confirmTemplate = new ConfirmTemplate(
+                        "Do it?",
+                        new MessageAction("Yes", "Yes!"),
+                        new DatetimePickerAction("123", "test", "date")
+                );
+        		result = new TemplateMessage("Confirm alt text", confirmTemplate);
+        		break;
+        	default: 
+        		StringBuffer sb = new StringBuffer();
+        		
+				try {
+					if (hasKeyWord(originalMessageText)) {
+						String locationName = getKeyWordLocationName(originalMessageText);
+						if(locationName != null) {
+							WeatherBo weatherBo = getWeather(locationName);
+							
+							sb.append(locationName).append("目前").append("\n");
+							sb.append("天氣:").append(weatherBo.getWeather()).append("\n");
+							sb.append("降雨機率:").append(weatherBo.getProbabilityOfPrecipitation()).append("%").append("\n");
+							sb.append("氣溫:").append(weatherBo.getMinTemperature()).append("~").append(weatherBo.getMaxTemperature()).append("度")
+							.append("\n");
+							sb.append("舒適度:").append(weatherBo.getComfortIndex());
+						}else {
+							sb.append("不好意思，查無資料");
+						}
+						
+						
+						result = new TextMessage(sb.toString()); 
+					} 
+				} catch (Exception e) {
+					sb.append(e.getMessage());
+				}
+			result = new TextMessage(sb.toString());
+        }
         
-//        lineMessagingClient.replyMessage(new ReplyMessage(token, new TextMessage(originalMessageText))).get();
-//        
-//        switch(originalMessageText) {
-//        	case "我上班瞜!":
-//        		result = new TextMessage("上班簽到已完成，請上班加油哦~~");
-//        		break;
-//        	case "我下班瞜!":
-//        		result = new TextMessage("下班簽退已完成，辛苦了哦~~");
-//        		break;
-//        	case "@查詢天氣":
-//        		result = new MessageWithQuickReplySupplier6().get();
-//        		break;
-//        	case "@北部地區":
-//        		result = new MessageWithQuickReplySupplier().get();
-//        		break;
-//        	case "@中部地區":
-//        		result = new MessageWithQuickReplySupplier2().get();
-//        		break;
-//        	case "@南部地區":
-//        		result = new MessageWithQuickReplySupplier5().get();
-//        		break;
-//        	case "@其他地區":
-//        		result = new MessageWithQuickReplySupplier4().get();
-//        		break;
-//        	case "@東部地區":
-//        		result = new MessageWithQuickReplySupplier3().get();
-//        		break;
-//        	case "@ID":
-//        		result = new TextMessage(event.getSource().getUserId());
-//        		break;
-//        	case "token":
-//        		result = new TextMessage(token);
-//        		break;
-//        	case "@Confirm":	
-//        		ConfirmTemplate confirmTemplate = new ConfirmTemplate(
-//                        "Do it?",
-//                        new MessageAction("Yes", "Yes!"),
-//                        new DatetimePickerAction("123", "test", "date")
-//                );
-//        		result = new TemplateMessage("Confirm alt text", confirmTemplate);
-//        		break;
-//        	default: 
-//        		StringBuffer sb = new StringBuffer();
-//        		
-//				try {
-//					if (hasKeyWord(originalMessageText)) {
-//						String locationName = getKeyWordLocationName(originalMessageText);
-//						if(locationName != null) {
-//							WeatherBo weatherBo = getWeather(locationName);
-//							
-//							sb.append(locationName).append("目前").append("\n");
-//							sb.append("天氣:").append(weatherBo.getWeather()).append("\n");
-//							sb.append("降雨機率:").append(weatherBo.getProbabilityOfPrecipitation()).append("%").append("\n");
-//							sb.append("氣溫:").append(weatherBo.getMinTemperature()).append("~").append(weatherBo.getMaxTemperature()).append("度")
-//							.append("\n");
-//							sb.append("舒適度:").append(weatherBo.getComfortIndex());
-//						}else {
-//							sb.append("不好意思，查無資料");
-//						}
-//						
-//						
-//						result = new TextMessage(sb.toString()); 
-//					} 
-//				} catch (Exception e) {
-//					sb.append(e.getMessage());
-//				}
-//			result = new TextMessage(sb.toString());
-//        }
+        try {
+        	BotApiResponse apiResponse = lineMessagingClient.replyMessage(new ReplyMessage(token, result)).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
         
-        //BotApiResponse apiResponse = lineMessagingClient.replyMessage(new ReplyMessage(token, result)).get();
-        return result;
+        //return result;
     }
     
     private String getKeyWordLocationName(String keyWord) {
