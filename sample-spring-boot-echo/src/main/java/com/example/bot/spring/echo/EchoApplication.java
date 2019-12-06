@@ -82,6 +82,7 @@ public class EchoApplication {
         Message result = null;
         final String originalMessageText = event.getMessage().getText();
         final String token = event.getReplyToken();
+        final String userId = event.getSource().getUserId();
         
         switch(originalMessageText) {
         	case "我上班瞜!":
@@ -109,7 +110,7 @@ public class EchoApplication {
         		result = new MessageWithQuickReplySupplier3().get();
         		break;
         	case "@ID":
-        		result = new TextMessage(event.getSource().getUserId());
+        		result = new TextMessage(userId);
         		break;
         	case "token":
         		result = new TextMessage(token);
@@ -131,7 +132,9 @@ public class EchoApplication {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-        		
+				break;
+        	case "@打卡系統":
+        		lineMessagingClient.linkRichMenuIdToUser(userId, "richmenu-f2f5917213977afb6a32d9fa8e2b8557");
         		break;
         	case "@Confirm":	
         		ConfirmTemplate confirmTemplate = new ConfirmTemplate(
