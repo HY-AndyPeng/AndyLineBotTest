@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,8 @@ import com.linecorp.bot.model.message.quickreply.QuickReply;
 import com.linecorp.bot.model.message.template.ButtonsTemplate;
 import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.model.response.BotApiResponse;
+import com.linecorp.bot.model.richmenu.RichMenuListResponse;
+import com.linecorp.bot.model.richmenu.RichMenuResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
@@ -110,6 +113,25 @@ public class EchoApplication {
         		break;
         	case "token":
         		result = new TextMessage(token);
+        		break;
+        	case "@test":
+
+				try {
+					CompletableFuture<RichMenuListResponse> richMenuList = lineMessagingClient.getRichMenuList();
+					RichMenuListResponse richMenuListResponse = richMenuList.get();
+					StringBuffer sb = new StringBuffer();
+					for(RichMenuResponse richMenuResponse : richMenuListResponse.getRichMenus()) {
+						sb.append(richMenuResponse.getName()).append(",");
+					}
+					result = new TextMessage(sb.toString());
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ExecutionException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        		
         		break;
         	case "@Confirm":	
         		ConfirmTemplate confirmTemplate = new ConfirmTemplate(
