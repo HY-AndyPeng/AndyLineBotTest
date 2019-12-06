@@ -85,10 +85,10 @@ public class EchoApplication {
         final String userId = event.getSource().getUserId();
         
         switch(originalMessageText) {
-        	case "我上班瞜!":
+        	case "!我要打卡":
         		result = new TextMessage("上班簽到已完成，請上班加油哦~~");
         		break;
-        	case "我下班瞜!":
+        	case "!我下班瞜":
         		result = new TextMessage("下班簽退已完成，辛苦了哦~~");
         		break;
         	case "@查詢天氣":
@@ -133,8 +133,11 @@ public class EchoApplication {
 					e1.printStackTrace();
 				}
 				break;
-        	case "@打卡系統":
+        	case "我上班瞜!":
         		lineMessagingClient.linkRichMenuIdToUser(userId, "richmenu-f2f5917213977afb6a32d9fa8e2b8557");
+        		break;
+        	case "@回首頁":
+        		lineMessagingClient.linkRichMenuIdToUser(userId, "richmenu-79dbc769fd192d1b2160a89b02714fee");
         		break;
         	case "@Confirm":	
         		ConfirmTemplate confirmTemplate = new ConfirmTemplate(
