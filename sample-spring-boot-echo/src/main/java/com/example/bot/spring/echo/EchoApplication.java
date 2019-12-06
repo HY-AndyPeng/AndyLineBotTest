@@ -59,6 +59,8 @@ import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.message.quickreply.QuickReply;
 import com.linecorp.bot.model.message.template.ButtonsTemplate;
+import com.linecorp.bot.model.message.template.CarouselColumn;
+import com.linecorp.bot.model.message.template.CarouselTemplate;
 import com.linecorp.bot.model.message.template.ConfirmTemplate;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.model.richmenu.RichMenuListResponse;
@@ -69,6 +71,11 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 @SpringBootApplication
 @LineMessageHandler
 public class EchoApplication {
+	
+	static {
+		
+	}
+	
     public static void main(String[] args) {
         SpringApplication.run(EchoApplication.class, args);
     }
@@ -88,7 +95,7 @@ public class EchoApplication {
         	case "!我要打卡":
         		result = new TextMessage("上班簽到已完成，請上班加油哦~~");
         		break;
-        	case "!我下班瞜":
+        	case "!我下班摟":
         		result = new TextMessage("下班簽退已完成，辛苦了哦~~");
         		break;
         	case "@查詢天氣":
@@ -115,7 +122,52 @@ public class EchoApplication {
         	case "token":
         		result = new TextMessage(token);
         		break;
-        	case "@test":
+        	case "!test":
+        		CarouselTemplate carouselTemplate = new CarouselTemplate(
+                        Arrays.asList(
+                                new CarouselColumn(null, "hoge", "fuga", Arrays.asList(
+                                        new URIAction("Go to line.me",
+                                                      "https://line.me", null),
+                                        new URIAction("Go to line.me",
+                                                      "https://line.me", null),
+                                        new PostbackAction("Say hello1",
+                                                           "hello こんにちは")
+                                )),
+                                new CarouselColumn(null, "hoge", "fuga", Arrays.asList(
+                                        new PostbackAction("言 hello2",
+                                                           "hello こんにちは",
+                                                           "hello こんにちは"),
+                                        new PostbackAction("言 hello2",
+                                                           "hello こんにちは",
+                                                           "hello こんにちは"),
+                                        new MessageAction("Say message",
+                                                          "Rice=米")
+                                )),
+                                new CarouselColumn(null, "Datetime Picker",
+                                                   "Please select a date, time or datetime", Arrays.asList(
+                                        new DatetimePickerAction("Datetime",
+                                                                 "action=sel",
+                                                                 "datetime",
+                                                                 "2017-06-18T06:15",
+                                                                 "2100-12-31T23:59",
+                                                                 "1900-01-01T00:00"),
+                                        new DatetimePickerAction("Date",
+                                                                 "action=sel&only=date",
+                                                                 "date",
+                                                                 "2017-06-18",
+                                                                 "2100-12-31",
+                                                                 "1900-01-01"),
+                                        new DatetimePickerAction("Time",
+                                                                 "action=sel&only=time",
+                                                                 "time",
+                                                                 "06:15",
+                                                                 "23:59",
+                                                                 "00:00")
+                                ))
+                        ));
+        		result = new TemplateMessage("Carousel alt text", carouselTemplate);
+        		break;
+        	case "!getMenuList":
 
 				try {
 					CompletableFuture<RichMenuListResponse> richMenuList = lineMessagingClient.getRichMenuList();
@@ -176,7 +228,10 @@ public class EchoApplication {
         }
         
         try {
-        	BotApiResponse apiResponse = lineMessagingClient.replyMessage(new ReplyMessage(token, result)).get();
+        	if(result != null) {
+        		BotApiResponse apiResponse = lineMessagingClient.replyMessage(new ReplyMessage(token, result)).get();
+        	}
+        	
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
